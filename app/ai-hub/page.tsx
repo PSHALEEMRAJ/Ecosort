@@ -300,10 +300,7 @@ export default function AIHubPage() {
     </main>
   )
 }
-                {/* Chatbot Card */}
-                <Card className="p-6 cursor-pointer hover:border-primary transition-colors" onClick={() => setCurrentView("chatbot")}>
-                  <MessageSquare className="h-6 w-6 text-purple-500 mb-3" />
-                  <h3 className="font-semibold text-foreground mb-2">EcoBot Chatbot</h3>
+
                   <p className="text-sm text-muted-foreground mb-4">Ask AI anything about waste, recycling, or sustainability</p>
                   <Button size="sm" className="w-full">Chat Now</Button>
                 </Card>
@@ -489,7 +486,6 @@ export default function AIHubPage() {
   )
 }
 
-  const features = [
     {
       icon: BookOpen,
       color: "blue",
