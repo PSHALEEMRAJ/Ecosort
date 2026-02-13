@@ -12,6 +12,7 @@ import {
   Clock,
   Scan,
   RefreshCw,
+  Leaf,
 } from "lucide-react"
 import {
   BarChart,
@@ -292,6 +293,57 @@ export function DashboardView() {
           )}
         </div>
       </div>
+
+      {/* Environmental Impact Summary */}
+      {stats.totalClassifications > 0 && (
+        <div className="rounded-xl border border-border bg-gradient-to-br from-card to-secondary/20 p-6">
+          <h3 className="flex items-center gap-2 font-heading text-lg font-semibold text-foreground">
+            <Leaf className="h-5 w-5 text-green-400" />
+            Environmental Impact Summary
+          </h3>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Your waste sorting contribution to environmental sustainability
+          </p>
+          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="rounded-lg border border-green-500/20 bg-green-500/10 p-4">
+              <p className="text-sm text-muted-foreground">Recyclables Sorted</p>
+              <p className="mt-2 text-2xl font-bold text-green-400">
+                {stats.recyclableCount}
+              </p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Diverted from landfill
+              </p>
+            </div>
+            <div className="rounded-lg border border-blue-500/20 bg-blue-500/10 p-4">
+              <p className="text-sm text-muted-foreground">Carbon Offset</p>
+              <p className="mt-2 text-2xl font-bold text-blue-400">
+                ~{Math.round(stats.recyclableCount * 0.5)} kg
+              </p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Estimated CO₂ reduction
+              </p>
+            </div>
+            <div className="rounded-lg border border-amber-500/20 bg-amber-500/10 p-4">
+              <p className="text-sm text-muted-foreground">E-Waste Tracked</p>
+              <p className="mt-2 text-2xl font-bold text-amber-400">
+                {stats.categoryCounts["e-waste"] || 0}
+              </p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Items for safe disposal
+              </p>
+            </div>
+            <div className="rounded-lg border border-purple-500/20 bg-purple-500/10 p-4">
+              <p className="text-sm text-muted-foreground">Eco Score</p>
+              <p className="mt-2 text-2xl font-bold text-purple-400">
+                {Math.min(100, Math.round((stats.recyclableCount / Math.max(1, stats.totalClassifications)) * 100))}%
+              </p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Sustainability rating
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Achievements */}
       <div className="rounded-xl border border-border bg-card p-6">
