@@ -301,40 +301,6 @@ export default function AIHubPage() {
   )
 }
 
-                  <MapPin className="h-6 w-6 text-green-500 mb-3" />
-                  <h3 className="font-semibold text-foreground mb-2">Find Facilities</h3>
-                  <p className="text-sm text-muted-foreground mb-4">Locate nearby disposal and recycling facilities</p>
-                  <Button size="sm" className="w-full">Find Nearest</Button>
-                </Card>
-
-                {/* Goals Card */}
-                <Card className="p-6 cursor-pointer hover:border-primary transition-colors" onClick={() => setCurrentView("goals")}>
-                  <Target className="h-6 w-6 text-amber-500 mb-3" />
-                  <h3 className="font-semibold text-foreground mb-2">Set Goals</h3>
-                  <p className="text-sm text-muted-foreground mb-4">AI recommends sustainable goals for you</p>
-                  <Button size="sm" className="w-full">Set Goals</Button>
-                </Card>
-
-                {/* Analytics Card */}
-                <Card className="p-6 cursor-pointer hover:border-primary transition-colors" onClick={() => setCurrentView("analytics")}>
-                  <Zap className="h-6 w-6 text-cyan-500 mb-3" />
-                  <h3 className="font-semibold text-foreground mb-2">Analytics</h3>
-                  <p className="text-sm text-muted-foreground mb-4">ML-driven insights into your waste patterns</p>
-                  <Button size="sm" className="w-full">View Analytics</Button>
-                </Card>
-
-                {/* Calculator Card */}
-                <Card className="p-6 cursor-pointer hover:border-primary transition-colors" onClick={() => setCurrentView("calculator")}>
-                  <Brain className="h-6 w-6 text-red-500 mb-3" />
-                  <h3 className="font-semibold text-foreground mb-2">Impact Calculator</h3>
-                  <p className="text-sm text-muted-foreground mb-4">Calculate your environmental impact</p>
-                  <Button size="sm" className="w-full">Calculate</Button>
-                </Card>
-              </div>
-            </>
-          )}
-
-          {/* Chatbot View */}
           {currentView === "chatbot" && (
             <div className="max-w-2xl mx-auto">
               <h2 className="text-2xl font-bold text-foreground mb-4">EcoBot - AI Waste Assistant</h2>
