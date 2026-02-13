@@ -1,39 +1,51 @@
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
-import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import {
-  Trophy,
-  Users,
-  Target,
-  MessageSquare,
-  Award,
-  TrendingUp,
-  Heart,
-  Share2,
-} from "lucide-react"
+import { Card } from "@/components/ui/card"
+import Link from "next/link"
+import { ArrowLeft, AlertCircle } from "lucide-react"
 
 export const metadata = {
-  title: "Community & Impact - EcoSort AI",
-  description: "Join our global community, view leaderboards, participate in challenges, and track your environmental impact.",
+  title: "Community - EcoSort AI",
+  description: "Community features coming soon.",
 }
 
 export default function CommunityPage() {
-  // Sample leaderboard data
-  const leaderboard = [
-    { rank: 1, name: "EcoWarrior", points: 2840, avatar: "🌱" },
-    { rank: 2, name: "GreenChampion", points: 2615, avatar: "♻️" },
-    { rank: 3, name: "SustainStar", points: 2390, avatar: "🌍" },
-    { rank: 4, name: "ClimateAction", points: 2165, avatar: "🌿" },
-    { rank: 5, name: "RecycleKing", points: 1940, avatar: "🔄" },
-  ]
+  return (
+    <main>
+      <Navbar />
+      <div className="mx-auto max-w-4xl px-6 py-20">
+        <div className="text-center">
+          <Card className="p-12 border-border">
+            <AlertCircle className="h-16 w-16 mx-auto text-amber-500 mb-6" />
+            <h1 className="font-heading text-3xl font-bold text-foreground mb-3">
+              Community Features Coming Soon
+            </h1>
+            <p className="text-muted-foreground text-lg mb-8">
+              We're building amazing community features including leaderboards, challenges, and social impact tracking. 
+              Check back soon!
+            </p>
+            <div className="flex gap-4 justify-center">
+              <Link href="/">
+                <Button variant="default" className="gap-2">
+                  <ArrowLeft className="h-4 w-4" />
+                  Back to Home
+                </Button>
+              </Link>
+              <Link href="/ai-hub">
+                <Button variant="outline">
+                  Explore AI Features
+                </Button>
+              </Link>
+            </div>
+          </Card>
+        </div>
+      </div>
+      <Footer />
+    </main>
+  )
+}
 
-  // Sample community challenges
-  const challenges = [
-    {
-      id: 1,
-      title: "Zero Waste Week",
       description: "Classify 50 items and achieve zero waste",
       participants: 3421,
       progress: 85,
