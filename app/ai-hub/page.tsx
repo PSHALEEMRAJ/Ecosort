@@ -301,20 +301,6 @@ export default function AIHubPage() {
   )
 }
 
-                  <p className="text-sm text-muted-foreground mb-4">Ask AI anything about waste, recycling, or sustainability</p>
-                  <Button size="sm" className="w-full">Chat Now</Button>
-                </Card>
-
-                {/* Learning Card */}
-                <Card className="p-6 cursor-pointer hover:border-primary transition-colors" onClick={() => setCurrentView("learning")}>
-                  <BookOpen className="h-6 w-6 text-blue-500 mb-3" />
-                  <h3 className="font-semibold text-foreground mb-2">Learning Paths</h3>
-                  <p className="text-sm text-muted-foreground mb-4">AI-curated education on waste management</p>
-                  <Button size="sm" className="w-full">Start Learning</Button>
-                </Card>
-
-                {/* Facilities Card */}
-                <Card className="p-6 cursor-pointer hover:border-primary transition-colors" onClick={() => setCurrentView("facilities")}>
                   <MapPin className="h-6 w-6 text-green-500 mb-3" />
                   <h3 className="font-semibold text-foreground mb-2">Find Facilities</h3>
                   <p className="text-sm text-muted-foreground mb-4">Locate nearby disposal and recycling facilities</p>
