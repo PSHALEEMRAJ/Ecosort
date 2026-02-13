@@ -17,6 +17,7 @@ import {
   Tag,
   Layers,
   Box,
+  BarChart3,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import {
@@ -189,12 +190,12 @@ export function WasteClassifier() {
           }}
           aria-label="Upload area. Click or drag and drop an image to classify waste."
           className={cn(
-            "relative flex min-h-[320px] cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed p-8 transition-all",
+            "relative flex min-h-[380px] cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed p-8 transition-all shadow-lg",
             isProcessing
               ? "cursor-wait border-primary/30 bg-primary/5"
               : imageUrl
-                ? "border-border bg-card"
-                : "border-border hover:border-primary/50 hover:bg-primary/5"
+                ? "border-border bg-gradient-to-br from-card to-secondary/30"
+                : "border-border/60 hover:border-primary/60 hover:bg-primary/8 hover:shadow-xl hover:shadow-primary/5"
           )}
         >
           <input
@@ -240,15 +241,25 @@ export function WasteClassifier() {
           )}
 
           {isProcessing && (
-            <div className="absolute inset-0 flex flex-col items-center justify-center rounded-xl bg-background/80 backdrop-blur-sm">
-              <Loader2 className="h-10 w-10 animate-spin text-primary" />
-              <p className="mt-3 text-sm font-medium text-foreground">
+            <div className="absolute inset-0 flex flex-col items-center justify-center rounded-2xl bg-background/85 backdrop-blur-sm">
+              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/20">
+                <Loader2 className="h-7 w-7 animate-spin text-primary" />
+              </div>
+              <p className="mt-4 text-base font-semibold text-foreground">
                 {progressMsg || "Initializing AI models..."}
               </p>
-              <p className="mt-1 max-w-xs text-center text-xs text-muted-foreground">
+              <div className="mt-3 w-full max-w-xs">
+                <div className="h-1.5 rounded-full bg-secondary/50 overflow-hidden">
+                  <div 
+                    className="h-full bg-gradient-to-r from-primary to-primary/60 transition-all duration-300"
+                    style={{ width: status === "loading-model" ? "60%" : "85%" }}
+                  />
+                </div>
+              </div>
+              <p className="mt-3 max-w-xs text-center text-sm text-muted-foreground">
                 {status === "loading-model"
-                  ? "First load downloads MobileNet V2 + COCO-SSD models. Subsequent loads are cached."
-                  : "Running multi-crop inference + object detection ensemble..."}
+                  ? "Downloading MobileNet V2 + COCO-SSD models (cached on next use)..."
+                  : "Analyzing image with multi-crop ensemble + object detection..."}
               </p>
             </div>
           )}
@@ -504,6 +515,146 @@ export function WasteClassifier() {
                 {result.environmentalImpact}
               </p>
             </div>
+
+            {/* Enhanced Disposal Methods */}
+            {result.disposalMethods && result.disposalMethods.length > 0 && (
+              <div className="rounded-xl border border-border bg-card p-5">
+                <h3 className="flex items-center gap-2 font-heading text-sm font-semibold text-foreground">
+                  <Recycle className="h-4 w-4 text-green-400" />
+                  Disposal Methods & Instructions
+                </h3>
+                <div className="mt-3 space-y-3">
+                  {result.disposalMethods.map((method, idx) => (
+                    <div key={idx} className="rounded-lg bg-secondary/50 p-3">
+                      <p className="font-medium text-sm text-foreground">{method.method}</p>
+                      <p className="mt-1 text-sm text-muted-foreground">{method.instructions}</p>
+                      {method.temperature && (
+                        <p className="mt-1 text-xs text-muted-foreground">
+                          <span className="font-semibold">Temperature:</span> {method.temperature}
+                        </p>
+                      )}
+                      {method.timeRequired && (
+                        <p className="text-xs text-muted-foreground">
+                          <span className="font-semibold">Time Required:</span> {method.timeRequired}
+                        </p>
+                      )}
+                      {method.safetyWarnings && method.safetyWarnings.length > 0 && (
+                        <div className="mt-2 space-y-1">
+                          {method.safetyWarnings.map((warning, wIdx) => (
+                            <p key={wIdx} className="text-xs text-amber-600 flex items-center gap-1">
+                              <AlertTriangle className="h-3 w-3" />
+                              {warning}
+                            </p>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Environmental Metrics */}
+            {result.environmentalMetrics && (
+              <div className="rounded-xl border border-border bg-card p-5">
+                <h3 className="flex items-center gap-2 font-heading text-sm font-semibold text-foreground">
+                  <BarChart3 className="h-4 w-4 text-blue-400" />
+                  Environmental Metrics
+                </h3>
+                <div className="mt-3 grid grid-cols-2 gap-3">
+                  <div className="rounded-lg bg-secondary/50 p-3">
+                    <p className="text-xs text-muted-foreground">Carbon Footprint</p>
+                    <p className="mt-1 font-semibold text-sm text-foreground">
+                      {result.environmentalMetrics.carbonFootprint} kg CO₂
+                    </p>
+                  </div>
+                  <div className="rounded-lg bg-secondary/50 p-3">
+                    <p className="text-xs text-muted-foreground">Recyclability</p>
+                    <p className="mt-1 font-semibold text-sm text-foreground">
+                      {result.environmentalMetrics.recyclabilityPercentage}%
+                    </p>
+                  </div>
+                  <div className="rounded-lg bg-secondary/50 p-3">
+                    <p className="text-xs text-muted-foreground">Hazard Level</p>
+                    <p className={cn("mt-1 font-semibold text-sm capitalize", {
+                      "text-green-400": result.environmentalMetrics.hazardLevel === "safe",
+                      "text-amber-400": result.environmentalMetrics.hazardLevel === "moderate",
+                      "text-red-400": result.environmentalMetrics.hazardLevel === "hazardous",
+                    })}>
+                      {result.environmentalMetrics.hazardLevel}
+                    </p>
+                  </div>
+                  <div className="rounded-lg bg-secondary/50 p-3">
+                    <p className="text-xs text-muted-foreground">Decomposition</p>
+                    <p className="mt-1 font-semibold text-sm text-foreground">
+                      {result.environmentalMetrics.decompositionTime || "N/A"}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Material Analysis */}
+            {result.detailedAnalysis && (
+              <div className="rounded-xl border border-border bg-card p-5">
+                <h3 className="flex items-center gap-2 font-heading text-sm font-semibold text-foreground">
+                  <Layers className="h-4 w-4 text-purple-400" />
+                  Material Analysis
+                </h3>
+                <div className="mt-3 space-y-2">
+                  <div>
+                    <p className="text-xs text-muted-foreground">Color</p>
+                    <p className="mt-0.5 text-sm text-foreground">{result.detailedAnalysis.color}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground">Texture</p>
+                    <p className="mt-0.5 text-sm text-foreground">{result.detailedAnalysis.texture}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground">Estimated Weight</p>
+                    <p className="mt-0.5 text-sm text-foreground">{result.detailedAnalysis.estimatedWeight}</p>
+                  </div>
+                  {result.detailedAnalysis.likelyLocations.length > 0 && (
+                    <div>
+                      <p className="text-xs text-muted-foreground">Likely Locations</p>
+                      <div className="mt-1 flex flex-wrap gap-1">
+                        {result.detailedAnalysis.likelyLocations.map((loc, idx) => (
+                          <span key={idx} className="inline-block rounded-full bg-primary/10 px-2 py-0.5 text-xs text-primary">
+                            {loc}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Image Quality & Processing Time */}
+            {(result.imageQuality || result.processingTime) && (
+              <div className="flex gap-3">
+                {result.imageQuality && (
+                  <div className="flex-1 rounded-xl border border-border bg-card p-4">
+                    <p className="text-xs text-muted-foreground">Image Quality</p>
+                    <div className="mt-2 flex items-center gap-2">
+                      <div className="h-2 flex-1 rounded-full bg-secondary overflow-hidden">
+                        <div 
+                          className="h-full bg-gradient-to-r from-blue-400 to-blue-500 transition-all"
+                          style={{ width: `${result.imageQuality}%` }}
+                        />
+                      </div>
+                      <span className="text-sm font-semibold text-foreground">{Math.round(result.imageQuality)}%</span>
+                    </div>
+                  </div>
+                )}
+                {result.processingTime && (
+                  <div className="flex-1 rounded-xl border border-border bg-card p-4">
+                    <p className="text-xs text-muted-foreground">Processing Time</p>
+                    <p className="mt-2 text-sm font-semibold text-foreground">{result.processingTime}ms</p>
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* Models Used Badge */}
             <div className="flex flex-wrap gap-2">
