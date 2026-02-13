@@ -300,8 +300,6 @@ export default function AIHubPage() {
     </main>
   )
 }
-            <div className="max-w-2xl mx-auto">
-              <h2 className="text-2xl font-bold text-foreground mb-4">EcoBot - AI Waste Assistant</h2>
               <Card className="p-6 h-96 flex flex-col">
                 <div className="flex-1 overflow-y-auto space-y-4 mb-4">
                   {chatMessages.map((msg, i) => (
