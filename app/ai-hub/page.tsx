@@ -300,8 +300,6 @@ export default function AIHubPage() {
     </main>
   )
 }
-              <Card className="p-6 h-96 flex flex-col">
-                <div className="flex-1 overflow-y-auto space-y-4 mb-4">
                   {chatMessages.map((msg, i) => (
                     <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                       <div className={`max-w-xs px-4 py-2 rounded-lg ${msg.role === "user" ? "bg-primary text-white" : "bg-secondary text-foreground"}`}>
