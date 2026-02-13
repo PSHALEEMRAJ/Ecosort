@@ -1,7 +1,6 @@
 "use client"
 
 import React, { useState } from "react"
-import { useRouter } from "next/navigation"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { Card } from "@/components/ui/card"
@@ -21,7 +20,6 @@ import {
 type FeatureView = "overview" | "chatbot" | "learning" | "facilities" | "goals" | "analytics" | "calculator"
 
 export default function AIHubPage() {
-  const router = useRouter()
   const [currentView, setCurrentView] = useState<FeatureView>("overview")
   const [chatMessages, setChatMessages] = useState<Array<{ role: string; content: string }>>([
     { role: "assistant", content: "Hi! I'm EcoBot. Ask me anything about waste disposal, recycling, composting, or environmental impact!" }
@@ -302,107 +300,6 @@ export default function AIHubPage() {
     </main>
   )
 }
-  const [currentView, setCurrentView] = useState<FeatureView>("overview")
-  const [chatMessages, setChatMessages] = useState<Array<{ role: string; content: string }>>([
-    { role: "assistant", content: "Hi! I'm EcoBot. Ask me anything about waste disposal, recycling, composting, or environmental impact!" }
-  ])
-  const [chatInput, setChatInput] = useState("")
-  const [isProcessing, setIsProcessing] = useState(false)
-
-  // AI Chatbot - Intent-based responses
-  const generateChatbotResponse = (userInput: string): string => {
-    const input = userInput.toLowerCase()
-    
-    if (input.includes("how") && (input.includes("dispose") || input.includes("throw"))) {
-      return "For most items, check your local waste guidelines. Recyclables go in the blue bin, organics in green, and general waste in black. For hazardous items like batteries or electronics, find a local e-waste facility."
-    }
-    if (input.includes("recycle") || input.includes("recyclable")) {
-      return "Most plastics (#1-7), paper, cardboard, glass, and metals are recyclable. Avoid contamination by rinsing containers. Check Earth911.com to find nearby recycling centers."
-    }
-    if (input.includes("compost")) {
-      return "Start composting by collecting food scraps and yard waste. Maintain a 50:50 ratio of brown (dry) and green (wet) materials. Add water and turn weekly for 2-3 months of decomposition."
-    }
-    if (input.includes("carbon") || input.includes("environmental")) {
-      return "By recycling one aluminum can, you save enough energy to power a laptop for 3 hours. Composting diverts methane-producing waste from landfills. Every action counts!"
-    }
-    if (input.includes("hazard") || input.includes("danger") || input.includes("toxic")) {
-      return "Hazardous waste includes batteries, paint, chemicals, and e-waste. Never dispose in regular trash. Contact your local hazmat facility for proper disposal options."
-    }
-    
-    return "I can help with waste disposal, recycling, composting, environmental impact, and more! What would you like to know?"
-  }
-
-  const handleChatSubmit = async () => {
-    if (!chatInput.trim()) return
-    
-    setIsProcessing(true)
-    const userMessage = chatInput
-    setChatInput("")
-    
-    // Add user message
-    setChatMessages(prev => [...prev, { role: "user", content: userMessage }])
-    
-    // Simulate processing delay
-    await new Promise(resolve => setTimeout(resolve, 800))
-    
-    // Generate AI response
-    const response = generateChatbotResponse(userMessage)
-    setChatMessages(prev => [...prev, { role: "assistant", content: response }])
-    setIsProcessing(false)
-  }
-
-  // Learning Path UI
-  const learningModules = [
-    { id: 1, title: "Plastic Crisis", difficulty: "Beginner", progress: 100, completed: true },
-    { id: 2, title: "Composting 101", difficulty: "Beginner", progress: 65, completed: false },
-    { id: 3, title: "E-Waste Management", difficulty: "Intermediate", progress: 30, completed: false },
-  ]
-
-  // Facilities Data
-  const facilities = [
-    { name: "Downtown Recycling Center", distance: "0.5 km", rating: 4.8, type: "Mixed Recycling" },
-    { name: "Green Organics Compost", distance: "1.2 km", rating: 4.6, type: "Composting" },
-    { name: "E-Waste Solutions", distance: "2.3 km", rating: 4.9, type: "Electronic Waste" },
-  ]
-
-  // Goals Data
-  const goals = [
-    { title: "Achieve 70% Recycling Rate", current: 45, target: 70, timeframe: "This Month" },
-    { title: "Save 100kg CO2", current: 62, target: 100, timeframe: "This Quarter" },
-  ]
-
-  return (
-    <main className="min-h-screen bg-background flex flex-col">
-      <Navbar />
-      
-      <div className="flex-1">
-        {/* Header */}
-        {currentView !== "overview" && (
-          <div className="border-b border-border bg-card p-4">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setCurrentView("overview")}
-              className="gap-2 mb-2"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              Back to Overview
-            </Button>
-          </div>
-        )}
-
-        <div className="mx-auto max-w-6xl px-4 py-8">
-          {/* Overview */}
-          {currentView === "overview" && (
-            <>
-              <div className="mb-12 text-center">
-                <h1 className="font-heading text-4xl font-bold text-foreground">AI Intelligence Hub</h1>
-                <p className="mt-3 text-lg text-muted-foreground">
-                  Explore AI-powered features for better waste management
-                </p>
-              </div>
-
-              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {/* Chatbot Card */}
                 <Card className="p-6 cursor-pointer hover:border-primary transition-colors" onClick={() => setCurrentView("chatbot")}>
                   <MessageSquare className="h-6 w-6 text-purple-500 mb-3" />
